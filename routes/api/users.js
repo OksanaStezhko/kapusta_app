@@ -19,8 +19,6 @@ router.post(
   controllerWrapper(auth.signup)
 )
 
-router.get('/verify/:verifyToken', controllerWrapper(auth.verify))
-
 router.post(
   '/verify',
   validation(userEmailSchema),

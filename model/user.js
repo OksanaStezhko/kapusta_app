@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const { SECRET_KEY } = process.env
 
 const userSchema = new Schema(
   {
@@ -44,8 +45,6 @@ userSchema.methods.comparePassword = function (password) {
 userSchema.methods.updateBalance = function (balance) {
   this.balance = balance
 }
-
-const { SECRET_KEY } = process.env
 
 userSchema.methods.createToken = function () {
   const payload = {

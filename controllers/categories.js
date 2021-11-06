@@ -3,7 +3,6 @@ const { Category } = require('../model')
 
 const getCategoriesBySign = async (req, res) => {
   const { signValue } = req.params
-  console.log('req.params:', req.params)
   const result = await Category.find({ sign: signValue }, '_id name sign')
   sendSuccess.categories(res, result)
 }
