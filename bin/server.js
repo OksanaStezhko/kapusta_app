@@ -11,7 +11,7 @@ mongoose
   })
   .then(() =>
     app.listen(PORT, () => {
-      console.log('datebase connection successful')
+      console.log('Database connection successful')
     })
   )
   .catch((error) => {
