@@ -36,8 +36,8 @@ const signout = async (req, res) => {
 }
 
 const currentUser = async (req, res) => {
-  const { name, email } = req.user
-  sendSuccess.users(res, { name, email })
+  const { name, email, balance } = req.user
+  sendSuccess.users(res, { name, email, balance })
 }
 
 const updateBalance = async (req, res) => {

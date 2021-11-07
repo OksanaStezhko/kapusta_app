@@ -1,16 +1,10 @@
-const contacts = (res, results, message = '', status = 200) => {
-  res.status(status).json({
-    message: `${status}OK.` + message,
-    results,
-  })
-}
-
 const users = (res, user, status = 200) => {
   res.status(status).json({
     user,
   })
 }
-
+// сделала отдельные ответы для разных роутов,
+// но если различий не будет, можно объединить
 const categories = (res, results, message = '', status = 200) => {
   res.status(status).json({
     message: `${status}OK.` + message,
@@ -18,4 +12,25 @@ const categories = (res, results, message = '', status = 200) => {
   })
 }
 
-module.exports = { contacts, users, categories }
+const transactions = (
+  res,
+  trans,
+  currentBalance,
+  message = '',
+  status = 200
+) => {
+  res.status(status).json({
+    message: `${status}OK.` + message,
+    trans,
+    currentBalance,
+  })
+}
+
+const reports = (res, results, message = '', status = 200) => {
+  res.status(status).json({
+    message: `${status}OK.` + message,
+    results,
+  })
+}
+
+module.exports = { users, categories, transactions, reports }

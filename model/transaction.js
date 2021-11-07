@@ -10,23 +10,25 @@ const transactionSchema = Schema(
     category: {
       type: SchemaTypes.ObjectId,
       ref: 'category',
-      require: true,
+      required: [true, 'Id of category is required'],
+    },
+    date: {
+      type: Date,
+      required: [true, 'Date of category is required'],
+      default: Date.now(),
     },
     year: {
-      type: String,
-      default: '',
+      type: Number,
     },
     month: {
-      type: String,
-      default: '',
+      type: Number,
     },
     day: {
-      type: String,
-      default: '',
+      type: Number,
     },
     description: {
       type: String,
-      maxLength: 30,
+      default: '',
     },
     value: {
       type: Number,
@@ -35,6 +37,11 @@ const transactionSchema = Schema(
   },
   { versionKey: false, timestamps: true }
 )
+transactionSchema.methods.setDetalsDate = function () {
+  this.year = this.date.getFullYear()
+  this.month = this.date.getMonth()
+  this.day = this.date.getDate()
+}
 
 const Transaction = model('transaction', transactionSchema)
 

@@ -8,7 +8,7 @@ const categorySchema = Schema(
     },
     sign: {
       type: String,
-      default: 'expenses',
+      required: [true, 'Sign of category is required'],
     },
   },
   { versionKey: false, timestamps: true }

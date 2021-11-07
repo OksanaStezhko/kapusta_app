@@ -1,9 +1,5 @@
 const express = require('express')
-const {
-  userLoginSchema,
-  userRegistrySchema,
-  userEmailSchema,
-} = require('../../joiSchemas')
+const { userLoginSchema, userRegistrySchema } = require('../../joiSchemas')
 const {
   controllerWrapper,
   validation,
@@ -17,12 +13,6 @@ router.post(
   '/signup',
   validation(userRegistrySchema),
   controllerWrapper(auth.signup)
-)
-
-router.post(
-  '/verify',
-  validation(userEmailSchema),
-  controllerWrapper(auth.repeatVerify)
 )
 
 router.post(
