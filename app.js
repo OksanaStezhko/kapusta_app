@@ -3,7 +3,10 @@ const logger = require('morgan')
 const cors = require('cors')
 const usersRouter = require('./routes/api/users')
 const categoriesRouter = require('./routes/api/categories')
+
 const transactionsRouter = require('./routes/api/transactions')
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
 
 const app = express()
 
@@ -14,6 +17,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('public'))
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use('/api/users', usersRouter)
 app.use('/api/categories', categoriesRouter)
 app.use('/api/transactions', transactionsRouter)
