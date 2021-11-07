@@ -12,10 +12,17 @@ const categories = (res, results, message = '', status = 200) => {
   })
 }
 
-const transactions = (res, results, message = '', status = 200) => {
+const transactions = (
+  res,
+  trans,
+  currentBalance,
+  message = '',
+  status = 200
+) => {
   res.status(status).json({
     message: `${status}OK.` + message,
-    results,
+    trans,
+    currentBalance,
   })
 }
 

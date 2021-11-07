@@ -20,13 +20,14 @@ const updateBalanceAfterAddTrans = async ({
   body: { value, category },
 }) => {
   const signCategory = await defineSignCategory(category)
-
+  let newBalance
   if (signCategory === 'expenses') {
     newBalance = balance - value
   } else {
     newBalance = balance + value
   }
   await User.findByIdAndUpdate(_id, { balance: newBalance })
+  return newBalance
 }
 
 const updateBalanceAfterDeleteTrans = async (
@@ -34,13 +35,22 @@ const updateBalanceAfterDeleteTrans = async (
   { category, value }
 ) => {
   const signCategory = await defineSignCategory(category)
-
+  let newBalance
   if (signCategory === 'expenses') {
     newBalance = balance + value
   } else {
     newBalance = balance - value
   }
   await User.findByIdAndUpdate(_id, { balance: newBalance })
+  return newBalance
+}
+
+const addTransaction = async ({ user: { _id }, body }) => {
+  const newTrans = { ...body, owner: _id }
+  const result = await Transaction.create(newTrans)
+  result.setDetalsDate()
+  await result.save()
+  return result
 }
 
 const addExpenses = async (req, res) => {
@@ -48,21 +58,22 @@ const addExpenses = async (req, res) => {
     throw new BadRequest('Not enough funds for this operation')
   }
 
-  const newTrans = { ...req.body, owner: req.user._id }
-  const result = await Transaction.create(newTrans)
-  result.setDetalsDate()
-  await result.save()
-  await updateBalanceAfterAddTrans(req)
-  sendSuccess.transactions(res, result, 'Expenses added!', 201)
+  const newTrans = await addTransaction(req)
+  const currentBalance = await updateBalanceAfterAddTrans(req)
+
+  sendSuccess.transactions(
+    res,
+    newTrans,
+    currentBalance,
+    'Expenses added!',
+    201
+  )
 }
 
 const addIncomes = async (req, res) => {
-  const newTrans = { ...req.body, owner: req.user._id }
-  const result = await Transaction.create(newTrans)
-  result.setDetalsDate()
-  await result.save()
-  await updateBalanceAfterAddTrans(req)
-  sendSuccess.transactions(res, result, 'Incomes added!', 201)
+  const newTrans = await addTransaction(req)
+  const currentBalance = await updateBalanceAfterAddTrans(req)
+  sendSuccess.transactions(res, newTrans, currentBalance, 'Incomes added!', 201)
 }
 
 const deleteTransactionById = async (req, res) => {
@@ -78,11 +89,12 @@ const deleteTransactionById = async (req, res) => {
     )
   }
 
-  await updateBalanceAfterDeleteTrans(req, result)
+  const currentBalance = await updateBalanceAfterDeleteTrans(req, result)
 
   sendSuccess.transactions(
     res,
     result,
+    currentBalance,
     `Transaction with id=${transId} deleted!`
   )
 }

@@ -5,7 +5,7 @@ const transactionSchema = Joi.object({
   date: Joi.date(),
   category: Joi.objectId().required(),
   description: Joi.string().max(50),
-  value: Joi.number().min(0.01).required(),
+  value: Joi.number().positive().required(),
 })
 
 module.exports = transactionSchema
