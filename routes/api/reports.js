@@ -2,16 +2,16 @@ const express = require('express')
 const {
   authenticate,
   controllerWrapper,
-  validationParam,
+  validationQuery,
 } = require('../../middlwares')
 const { reports: reportsController } = require('../../controllers')
-const { reportsParamSchema } = require('../../joiSchemas')
+const { reportsQuerySchema } = require('../../joiSchemas')
 const router = express.Router()
 router.use(authenticate)
 
 router.get(
-  '/detals/:year/:month/:signValue?',
-  validationParam(reportsParamSchema),
+  '/detals',
+  validationQuery(reportsQuerySchema),
   controllerWrapper(reportsController.detalsTransactions)
 )
 
