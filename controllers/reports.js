@@ -1,7 +1,5 @@
-const { NotFound, BadRequest } = require('http-errors')
-const { Transaction, User, Category } = require('../model')
+const { Transaction } = require('../model')
 const { sendSuccess } = require('../utils')
-const { signValue } = require('../utils/constants')
 
 const detalsTransactions = async (req, res) => {
   const { month, year, signValue } = req.params
@@ -9,7 +7,7 @@ const detalsTransactions = async (req, res) => {
     { year, month },
     '_id date year month description category value'
   ).populate('category')
-
+  let result = []
   if (signValue) {
     result = searchResult.filter((trans) => trans.category.sign === signValue)
   } else result = searchResult
