@@ -19,24 +19,18 @@ const groupByCategory = async (req, res) => {
   const { month, year, sign } = req.query
   const searchResult = await Transaction.find(
     { year, month },
-    '_id date year month description category value'
+    '_id description category value'
   ).populate('category')
 
   const filterdResult = sign
     ? searchResult.filter((trans) => trans.category.sign === sign)
     : searchResult
 
-  const result = filterdResult
-    .map(
-      ({
-        category: { _id: categoryId, name: categoryName },
-        description,
-        value,
-      }) => {
-        return { categoryId, categoryName, description, value }
-      }
-    )
-    .reduce((acc, { categoryId, categoryName, description, value }) => {
+  const result = filterdResult.reduce(
+    (
+      acc,
+      { category: { _id: categoryId, name: categoryName }, description, value }
+    ) => {
       const findCategory = acc.find((item) => item.categoryId === categoryId)
 
       if (findCategory) {
@@ -61,7 +55,9 @@ const groupByCategory = async (req, res) => {
           subCategories: [{ name: description, value }],
         },
       ]
-    }, [])
+    },
+    []
+  )
 
   sendSuccess.reports(
     res,
