@@ -15,4 +15,10 @@ router.get(
   controllerWrapper(reportsController.detalsTransactions)
 )
 
+router.get(
+  '/group-by-category',
+  validationQuery(reportsQuerySchema),
+  controllerWrapper(reportsController.groupByCategory)
+)
+
 module.exports = router
