@@ -19,10 +19,7 @@ const addCategory = async (req, res) => {
 
 const updateNameEn = async (req, res) => {
   const { idCategory, nameEn } = req.query
-  // if (!_id || nameEn) {
-  //   throw new BadRequest('No found file in request!')
-  // }
-  const result = await Category.findByIdAndUpdate(
+g  const result = await Category.findByIdAndUpdate(
     idCategory,
     { nameEn },
     { new: true }
