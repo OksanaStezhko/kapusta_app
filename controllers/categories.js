@@ -17,8 +17,22 @@ const addCategory = async (req, res) => {
   sendSuccess.categories(res, result, 'Category added!', 201)
 }
 
+const updateNameEn = async (req, res) => {
+  const { idCategory, nameEn } = req.query
+  // if (!_id || nameEn) {
+  //   throw new BadRequest('No found file in request!')
+  // }
+  const result = await Category.findByIdAndUpdate(
+    idCategory,
+    { nameEn },
+    { new: true }
+  )
+  sendSuccess.categories(res, result, 'Category updated!', 201)
+}
+
 module.exports = {
   getCategoriesBySign,
   getAllCategories,
   addCategory,
+  updateNameEn,
 }

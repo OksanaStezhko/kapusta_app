@@ -6,6 +6,10 @@ const categorySchema = Schema(
       type: String,
       required: [true, 'Name of category is required'],
     },
+    nameEn: {
+      type: String,
+      required: [true, 'Name of category by English is required'],
+    },
     sign: {
       type: String,
       required: [true, 'Sign of category is required'],
