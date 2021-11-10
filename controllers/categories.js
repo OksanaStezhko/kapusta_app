@@ -3,12 +3,15 @@ const { Category } = require('../model')
 
 const getCategoriesBySign = async (req, res) => {
   const { signValue } = req.params
-  const result = await Category.find({ sign: signValue }, '_id name sign')
+  const result = await Category.find(
+    { sign: signValue },
+    '_id name nameEn sign'
+  )
   sendSuccess.categories(res, result)
 }
 
 const getAllCategories = async (req, res) => {
-  const result = await Category.find({}, '_id name sign')
+  const result = await Category.find({}, '_id name nameEn sign')
   sendSuccess.categories(res, result)
 }
 
@@ -19,7 +22,7 @@ const addCategory = async (req, res) => {
 
 const updateNameEn = async (req, res) => {
   const { idCategory, nameEn } = req.query
-g  const result = await Category.findByIdAndUpdate(
+  const result = await Category.findByIdAndUpdate(
     idCategory,
     { nameEn },
     { new: true }
