@@ -5,6 +5,7 @@ const categorySchema = require('./category')
 const transIdSchema = require('./transId')
 const transactionSchema = require('./transaction')
 const reportsQuerySchema = require('./reportsQuery')
+const reportsByYearParamSchema = require('./reportsByYearQuery')
 
 module.exports = {
   userLoginSchema,
@@ -14,4 +15,5 @@ module.exports = {
   transIdSchema,
   transactionSchema,
   reportsQuerySchema,
+  reportsByYearParamSchema,
 }
