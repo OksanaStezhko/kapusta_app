@@ -5,7 +5,10 @@ const {
   validationQuery,
 } = require('../../middlwares')
 const { reports: reportsController } = require('../../controllers')
-const { reportsQuerySchema } = require('../../joiSchemas')
+const {
+  reportsQuerySchema,
+  reportsByYearParamSchema,
+} = require('../../joiSchemas')
 const router = express.Router()
 router.use(authenticate)
 
@@ -19,6 +22,12 @@ router.get(
   '/group-by-category',
   validationQuery(reportsQuerySchema),
   controllerWrapper(reportsController.groupByCategory)
+)
+
+router.get(
+  '/year-report',
+  validationQuery(reportsByYearParamSchema),
+  controllerWrapper(reportsController.getReportByTrans)
 )
 
 module.exports = router

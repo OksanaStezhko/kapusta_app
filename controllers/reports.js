@@ -66,4 +66,44 @@ const groupByCategory = async (req, res) => {
   )
 }
 
-module.exports = { detalsTransactions, groupByCategory }
+const getReportByTrans = async (req, res) => {
+  const { _id } = req.user
+  const { sign } = req.query
+
+  const yearNow = new Date().getFullYear()
+  const result = await Transaction.find(
+    { owner: _id, year: yearNow },
+    '_id date year month value'
+  ).populate('category')
+  const filterdResult = result.filter((trans) => trans.category.sign === sign)
+  const groupBy = (objArr, prop) => {
+    return objArr.reduce(function (total, obj) {
+      let key = obj[prop]
+
+      if (!total[key]) {
+        total[key] = []
+      }
+      total[key].push(obj.value)
+      return total
+    }, {})
+  }
+  let groupedByMonth = groupBy(filterdResult, 'month')
+  const entries = Object.entries(groupedByMonth)
+  const newData = entries.map(([key, value]) => {
+    const sum = value.reduce((total, amount) => total + amount)
+    const object = Object.assign(
+      {},
+      ...Object.entries({ key }).map(([a, b]) => ({ [b]: sum }))
+    )
+    return object
+  })
+  const finalResult = Object.assign({}, ...newData)
+
+  sendSuccess.reports(res, finalResult, 'ok')
+}
+
+module.exports = {
+  detalsTransactions,
+  groupByCategory,
+  getReportByTrans,
+}
