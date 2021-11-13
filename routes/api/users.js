@@ -1,5 +1,9 @@
 const express = require('express')
-const { userLoginSchema, userRegistrySchema } = require('../../joiSchemas')
+const {
+  userLoginSchema,
+  userRegistrySchema,
+  balanceUpdateSchema,
+} = require('../../joiSchemas')
 const {
   controllerWrapper,
   validation,
@@ -25,6 +29,11 @@ router.post('/logout', authenticate, controllerWrapper(auth.signout))
 
 router.get('/current', authenticate, controllerWrapper(auth.currentUser))
 
-router.patch('/balance', authenticate, controllerWrapper(auth.updateBalance))
+router.patch(
+  '/balance',
+  validation(balanceUpdateSchema),
+  authenticate,
+  controllerWrapper(auth.updateBalance)
+)
 
 module.exports = router
