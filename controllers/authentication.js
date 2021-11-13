@@ -2,6 +2,8 @@ const queryString = require('query-string')
 const axios = require('axios')
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, BASE_URL, FRONTEND_URL } =
   process.env
+const { User } = require('../model')
+const { sendSuccess } = require('../utils')
 
 const googleAuth = async (req, res) => {
   const stringifiedParams = queryString.stringify({
@@ -43,14 +45,21 @@ const googleRedirect = async (req, res) => {
       Authorization: `Bearer ${tokenData.data.access_token}`,
     },
   })
-  // userData.data.email
-  // ...
-  // ...
-  // ...
+  const { name, email } = userData.data
+  let currentUser
+  const user = await User.findOne({ email }, '_id name email password  ')
+  if (!user) {
+    const newUser = new User({ name, email })
+    newUser.setPassword('google')
+    await newUser.save()
+    currentUser = newUser
+  } else {
+    currentUser = user
+  }
 
-  return res.redirect(
-    `${FRONTEND_URL}?name=${userData.data.name}&email=${userData.data.email}`
-  )
+  const token = currentUser.createToken()
+  await User.findByIdAndUpdate(currentUser._id, { token })
+  sendSuccess.users(res, { token, email, name })
 }
 
 module.exports = { googleAuth, googleRedirect }

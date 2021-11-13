@@ -3,8 +3,7 @@ const users = (res, user, status = 200) => {
     user,
   })
 }
-// сделала отдельные ответы для разных роутов,
-// но если различий не будет, можно объединить
+
 const categories = (res, results, message = '', status = 200) => {
   res.status(status).json({
     message: `${status}OK.` + message,
