@@ -1,8 +1,7 @@
 const queryString = require('query-string')
 const { v4 } = require('uuid')
 const axios = require('axios')
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, BASE_URL, FRONTEND_URL } =
-  process.env
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, BASE_URL } = process.env
 const { User } = require('../model')
 const { sendSuccess } = require('../utils')
 
