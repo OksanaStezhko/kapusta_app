@@ -1,4 +1,5 @@
 const queryString = require('query-string')
+const { v4 } = require('uuid')
 const axios = require('axios')
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, BASE_URL, FRONTEND_URL } =
   process.env
@@ -50,7 +51,7 @@ const googleRedirect = async (req, res) => {
   const user = await User.findOne({ email }, '_id name email password  ')
   if (!user) {
     const newUser = new User({ name, email })
-    newUser.setPassword('google')
+    newUser.setPassword(v4())
     await newUser.save()
     currentUser = newUser
   } else {
