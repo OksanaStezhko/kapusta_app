@@ -3,8 +3,9 @@ const { sendSuccess } = require('../utils')
 
 const detalsTransactions = async (req, res) => {
   const { month, year, sign } = req.query
+  const { _id: owner } = req.user
   const searchResult = await Transaction.find(
-    { year, month },
+    { year, month, owner },
     '_id date year month description category value'
   ).populate('category')
   let result = []
@@ -17,8 +18,9 @@ const detalsTransactions = async (req, res) => {
 
 const groupByCategory = async (req, res) => {
   const { month, year, sign } = req.query
+  const { _id: owner } = req.user
   const searchResult = await Transaction.find(
-    { year, month },
+    { year, month, owner },
     '_id description category value'
   ).populate('category')
 
@@ -78,7 +80,7 @@ const getReportByTrans = async (req, res) => {
   const filterdResult = result.filter((trans) => trans.category.sign === sign)
   const groupBy = (objArr, prop) => {
     return objArr.reduce(function (total, obj) {
-      let key = obj[prop]
+      const key = obj[prop]
 
       if (!total[key]) {
         total[key] = []
@@ -87,7 +89,7 @@ const getReportByTrans = async (req, res) => {
       return total
     }, {})
   }
-  let groupedByMonth = groupBy(filterdResult, 'month')
+  const groupedByMonth = groupBy(filterdResult, 'month')
   const entries = Object.entries(groupedByMonth)
   const newData = entries.map(([key, value]) => {
     const sum = value.reduce((total, amount) => total + amount)
