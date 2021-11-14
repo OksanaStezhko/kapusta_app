@@ -18,7 +18,7 @@ const signup = async (req, res) => {
 }
 
 const signin = async (req, res) => {
-  const { email, password } = req.body
+  const { name, email, password } = req.body
   const user = await User.findOne({ email }, '_id name email password  ')
   if (!user || !user.comparePassword(password)) {
     throw new BadRequest('Email or password is wrong')
@@ -26,7 +26,7 @@ const signin = async (req, res) => {
 
   const token = user.createToken()
   await User.findByIdAndUpdate(user._id, { token })
-  sendSuccess.users(res, { token, email })
+  sendSuccess.users(res, { name, email, token })
 }
 
 const signout = async (req, res) => {
