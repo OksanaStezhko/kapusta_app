@@ -61,7 +61,7 @@ const googleRedirect = async (req, res) => {
   await User.findByIdAndUpdate(currentUser._id, { token })
 
   return res.redirect(
-    `${FRONTEND_URL}/authorized?token = ${token}&email=${email}&name=${name}`
+    `${FRONTEND_URL}/authorized?token=${token}&email=${email}&name=${name}`
   )
 }
 
