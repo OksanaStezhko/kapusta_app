@@ -101,7 +101,7 @@ const getReportByTrans = async (req, res) => {
   })
   const finalResult = Object.assign({}, ...newData)
 
-  sendSuccess.reports(res, finalResult, 'ok')
+  sendSuccess.reports(res, finalResult, 'Year report success!')
 }
 
 module.exports = {
