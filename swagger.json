@@ -23,6 +23,14 @@
     {
       "name": "category",
       "description": "Operations with categories"
+    },
+    {
+      "name": "transaction",
+      "description": "Operations with transactions"
+    },
+    {
+      "name":"report",
+      "description": "Reports"
     }
   ],
   "schemes": [
@@ -442,7 +450,88 @@
             "jwt_token": []
           }
         ]
+      },
+      "patch": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Update category",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateCategory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "new подарки"
+                },
+                "sign": {
+                  "type": "string",
+                  "example": "incomes"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "201 OK. Category updated!"
+                },
+                "results": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "df5v1D"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "new подарки"
+                    },
+                    "sign": {
+                      "type": "string",
+                      "example": "incomes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string",
+              "example": "Not authorized"
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
       }
+
     },
     "/categories/{signValue}": {
       "get": {
@@ -502,6 +591,471 @@
           }
         ]
       }
+    },
+    "/transactions/expenses":{
+      "post": {
+        "tags": [
+          "transaction"
+        ],
+        "summary": "Add new expenses transaction",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "addExpenses",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type":"string",
+                  "$ref": "#/definitions/Category/properties/_id"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "подарки"
+                },
+                "value": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "201 OK. Transaction added!"
+                },
+                "trans": {
+                  "type": "object",
+                  "$ref": "#/definitions/Transaction"
+                },
+                "currentBalance":{
+                  "type":"number",
+                  "$ref":"#/definitions/User/properties/balance"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string",
+              "example": "Not authorized"
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
+      }
+    },
+    "/transactions/incomes":{
+      "post": {
+        "tags": [
+          "transaction"
+        ],
+        "summary": "Add new incomes transaction",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "addIncomes",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type":"string",
+                  "$ref": "#/definitions/Category/properties/_id"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "откуда прибыль"
+                },
+                "value": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "201 OK. Transaction added!"
+                },
+                "trans": {
+                  "type": "object",
+                  "$ref": "#/definitions/Transaction"
+                },
+                "currentBalance":{
+                  "type":"number",
+                  "$ref":"#/definitions/User/properties/balance"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string",
+              "example": "Not authorized"
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
+      }
+    },
+    "/transactions/{id}":{
+      "delete": {
+        "tags": [
+          "transaction"
+        ],
+        "summary": "Deleted transaction by id",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteTransactionById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The transaction id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction successfully deleted"
+          },
+          "404": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string",
+              "example": "Not authorized"
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
+      }
+    },
+    "/reports/detals":{
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Get report details by transactions",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "detalsTransactions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name":"sign",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "type":"string",
+              "example":"incomes"
+            }
+          },
+          {
+            "name":"year",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "type":"number",
+              "example":2021
+            }
+          },
+          {
+            "name":"month",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "type":"number",
+              "example":10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report of the Details by transaction",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "200 OK. Report of the details!"
+                },
+                "category": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Category"
+                  }
+                },
+                "date": {
+                  "$ref":"#/definitions/Transaction/properties/date"
+                },
+                "description":{
+                  "$ref":"#/definitions/Transaction/properties/description"
+                },
+                "value":{
+                  "$ref":"#/definitions/Transaction/properties/value"
+                },
+                "month":{
+                  "$ref":"#/definitions/Transaction/properties/month"
+                },
+                "year":{
+                  "$ref":"#/definitions/Transaction/properties/year"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string",
+              "example": "Not authorized"
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
+      }
+    },
+    "/reports/group-by-category":{
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Get report details by transactions and grouping by categories",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "groupByCategory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name":"sign",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "type":"string",
+              "example":"incomes"
+            }
+          },
+          {
+            "name":"year",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "type":"number",
+              "example":2021
+            }
+          },
+          {
+            "name":"month",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "type":"number",
+              "example":10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report of the Details by transaction and then grouping by categories",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "200 OK. Report of the details with grouping them later!"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                  "type":"object",
+                  "properties":{
+                    "categoryId":{
+                      "$ref":"#/definitions/Category/properties/_id"
+                    },
+                    "categoryName":{
+                      "$ref":"#/definitions/Category/properties/name"
+                    },
+                    "value":{
+                      "type":"number",
+                      "example": 0
+                    },
+                    "subCategories":{
+                      "type":"array",
+                      "items":{
+                        "type":"object",
+                        "properties":{
+                          "name":{
+                            "$ref":"#/definitions/Transaction/properties/description"
+                          },
+                          "value":{
+                            "$ref":"#/definitions/Transaction/properties/value"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string",
+              "example": "Not authorized"
+            }
+          }
+        }},
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
+      }
+    },
+    "/reports/year-report":{
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Get year report by sign",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "getReportByTrans",
+        "produces": [
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name":"sign",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "type":"string",
+              "example":"expenses"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Year report by sign",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "200 OK. Year report success!"
+                },
+                "results": {
+                  "type": "object",
+                  "properties": {
+                    "month":{
+                      "type":"number",
+                      "example": 0
+                    }
+                  }}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "string",
+              "example": "Not authorized"
+            }
+          }
+        },
+        "security": [
+          {
+            "jwt_token": []
+          }
+        ]
+      }
     }
   },
   "securityDefinitions": {
@@ -536,9 +1090,54 @@
         "name": "Category"
       }
     },
+    "Transaction": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "type": "object",
+          "$ref": "#/definitions/User/properties/_id"
+        },
+        "category": {
+          "type": "object",
+          "$ref": "#/definitions/Category/properties/_id"
+        },
+        "date": {
+          "type": "string",
+          "format":"date-time"
+        },
+        "year":{
+          "type": "number"
+        },
+        "month": {
+          "type": "number"
+        },
+        "day": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string",
+          "example": "text"
+        },
+        "value": {
+          "type": "number",
+          "example": 0
+        },
+        "_id":{
+          "type":"string",
+          "description":"Auto generated by MongoDB"
+        }
+      },
+      "xml": {
+        "name": "Transaction"
+      }
+    },
     "User": {
       "type": "object",
       "properties": {
+        "_id": {
+          "type": "string",
+          "description": "Auto generated by MongoDB"
+        },
         "name": {
           "type": "string",
           "example": "Joi"
@@ -550,6 +1149,10 @@
         "password": {
           "type": "string",
           "example": "qwerty"
+        },
+        "balance":{
+          "type":"number",
+          "example": 0
         }
       },
       "xml": {
