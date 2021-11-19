@@ -827,6 +827,7 @@
             "name":"month",
             "in":"query",
             "required":true,
+            "description":"Count of month start from 0. January - 0",
             "schema":{
               "type":"number",
               "example":10
@@ -921,6 +922,7 @@
           {
             "name":"month",
             "in":"query",
+            "description":"Count of month start from 0. January - 0",
             "required":true,
             "schema":{
               "type":"number",
@@ -999,7 +1001,7 @@
           "report"
         ],
         "summary": "Get year report by sign",
-        "description": "This can only be done by the logged in user.",
+        "description": "This can only be done by the logged in user",
         "operationId": "getReportByTrans",
         "produces": [
           "application/json"
