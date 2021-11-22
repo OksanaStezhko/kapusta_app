@@ -622,6 +622,10 @@
                 "value": {
                   "type": "number",
                   "example": 0
+                },
+                "date":{
+                  "type":"string",
+                  "example":"1637507578000"
                 }
               }
             }
@@ -699,6 +703,10 @@
                 "value": {
                   "type": "number",
                   "example": 0
+                },
+                "date":{
+                  "type":"string",
+                  "example":"1637507578000"
                 }
               }
             }
