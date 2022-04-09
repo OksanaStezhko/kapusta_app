@@ -6,14 +6,14 @@
     "title": "Swagger Kapu$ta",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
-      "email": "alinakotsiubynska@gmail.com"
+      "email": "oksana_stegko@ukr.net"
     },
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "app-kapusta.herokuapp.com",
+  "host": "kapusta-final-project-nodejs.herokuapp.com",
   "basePath": "/api",
   "tags": [
     {
