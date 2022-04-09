@@ -299,42 +299,6 @@
         ]
       }
     },
-    "/users/verify": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Validate user email",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "validateUser",
-        "produces": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "type": "string",
-              "example": "Not authorized"
-            }
-          }
-        },
-        "security": [
-          {
-            "jwt_token": []
-          }
-        ],
-        "deprecated": true
-      }
-    },
     "/categories": {
       "get": {
         "tags": [
